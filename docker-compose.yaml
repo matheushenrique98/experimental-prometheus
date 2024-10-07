@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  fastapi:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/fastapi.Dockerfile
+    ports:
+      - "8000:8000"
+
+  prometheus:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/prometheus.Dockerfile
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yaml:/etc/prometheus/prometheus.yaml
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-storage:/var/lib/grafana
+
+volumes:
+  grafana-storage:
